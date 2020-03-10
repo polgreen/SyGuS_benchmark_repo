@@ -1,0 +1,2 @@
+(error "Property is not handled by single invocation.
+")
