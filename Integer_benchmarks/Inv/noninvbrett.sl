@@ -1,0 +1,13 @@
+(set-logic LIA)
+(declare-var p Int)
+(declare-var c Int)
+(declare-var cl Int)
+(declare-var p! Int)
+(declare-var c! Int)
+(declare-var cl! Int)
+(synth-fun inv-f((parameter0 Int)(parameter1 Int)(parameter2 Int))Bool) 
+(constraint (=> (and (= p 0) (= c cl) )(inv-f p c cl )))
+(constraint (=> (and (inv-f p c cl ) (and (and (< p 4) (> cl 0) ) (and (= cl! (- cl 1)) (= p! (+ p 1 )) (= c! c) ) ) )(inv-f p! c! cl! )))
+(constraint (=> (inv-f p c cl )(or (and (< p 4) (> cl 0) ) (or (< c 4) (= p 4) ) )))
+(check-synth)
+

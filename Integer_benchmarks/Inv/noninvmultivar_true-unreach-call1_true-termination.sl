@@ -1,0 +1,11 @@
+(set-logic LIA)
+(declare-var x Int)
+(declare-var y Int)
+(declare-var x! Int)
+(declare-var y! Int)
+(synth-fun inv-f((parameter0 Int)(parameter1 Int))Bool) 
+(constraint (=> (= y x)(inv-f x y )))
+(constraint (=> (and (inv-f x y ) (and (< x 1024) (and (= x! (+ x 1 )) (= y! (+ y 1 )) ) ) )(inv-f x! y! )))
+(constraint (=> (inv-f x y )(or (< x 1024) (= x y) )))
+(check-synth)
+

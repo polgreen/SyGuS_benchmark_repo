@@ -1,0 +1,13 @@
+(set-logic LIA)
+(declare-var y Int)
+(declare-var z Int)
+(declare-var c Int)
+(declare-var y! Int)
+(declare-var z! Int)
+(declare-var c! Int)
+(synth-fun inv-f((parameter0 Int)(parameter1 Int)(parameter2 Int))Bool) 
+(constraint (=> (and (and (= c 0) (>= y 0) ) (and (>= 127 y) (= z (* 36 y)) ) )(inv-f y z c )))
+(constraint (=> (and (inv-f y z c ) (and (and (and (< c 36) (= z! (+ z 1 )) ) (= c! (+ c 1 )) ) (= y! y) ) )(inv-f y! z! c! )))
+(constraint (=> (inv-f y z c )(not (and (< c 36) (or (< z 0) (>= z 4608) ) ))))
+(check-synth)
+

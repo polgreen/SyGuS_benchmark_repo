@@ -1,0 +1,13 @@
+(set-logic LIA)
+(declare-var lo Int)
+(declare-var mid Int)
+(declare-var hi Int)
+(declare-var lo! Int)
+(declare-var mid! Int)
+(declare-var hi! Int)
+(synth-fun inv-f((parameter0 Int)(parameter1 Int)(parameter2 Int))Bool) 
+(constraint (=> (and (= lo 0) (and (> mid 0) (= hi (* 2 mid)) ) )(inv-f lo mid hi )))
+(constraint (=> (and (inv-f lo mid hi ) (and (> mid 0) (= lo! (+ lo 1 )) (= hi! (- hi 1)) (= mid! (- mid 1)) ) )(inv-f lo! mid! hi! )))
+(constraint (=> (inv-f lo mid hi )(or (> mid 0) (= lo hi) )))
+(check-synth)
+

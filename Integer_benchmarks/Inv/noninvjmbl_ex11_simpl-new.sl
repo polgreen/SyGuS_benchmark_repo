@@ -1,0 +1,11 @@
+(set-logic LIA)
+(declare-var c Int)
+(declare-var n Int)
+(declare-var c! Int)
+(declare-var n! Int)
+(synth-fun inv-f((parameter0 Int)(parameter1 Int))Bool) 
+(constraint (=> (and (= c 0) (> n 0) )(inv-f c n )))
+(constraint (=> (and (inv-f c n ) (or (and (and (> c n) (= c! (+ c 1 )) ) (= n! n) ) (and (and (= c n) (= c! 1) ) (= n! n) ) ) )(inv-f c! n! )))
+(constraint (=> (inv-f c n )(and (or (= c n) (and (>= c 0) (<= c n) ) ) (or (not (= c n)) (> n (- 1)) ) )))
+(check-synth)
+

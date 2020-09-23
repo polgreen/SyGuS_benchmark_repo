@@ -1,0 +1,13 @@
+(set-logic LIA)
+(declare-var size Int)
+(declare-var i Int)
+(declare-var sn Int)
+(declare-var i! Int)
+(declare-var sn! Int)
+(declare-var size! Int)
+(synth-fun inv-f((parameter0 Int)(parameter1 Int)(parameter2 Int))Bool) 
+(constraint (=> (and (= sn 0) (= i 1) )(inv-f i sn size )))
+(constraint (=> (and (inv-f i sn size ) (and (= size! size) (and (= i! (+ i 1 )) (and (<= i size) (= sn! (+ sn 1 )) ) ) ) )(inv-f i! sn! size! )))
+(constraint (=> (inv-f i sn size )(or (<= i size) (or (= sn size) (= sn 0) ) )))
+(check-synth)
+
