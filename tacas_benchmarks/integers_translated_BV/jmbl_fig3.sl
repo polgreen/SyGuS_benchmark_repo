@@ -1,0 +1,13 @@
+(set-logic ALL)
+(declare-var x (_ BitVec 32))
+(declare-var y (_ BitVec 32))
+(declare-var lock (_ BitVec 32))
+(declare-var x! (_ BitVec 32))
+(declare-var y! (_ BitVec 32))
+(declare-var lock! (_ BitVec 32))
+(synth-fun inv-f((parameter0 (_ BitVec 32))(parameter1 (_ BitVec 32))(parameter2 (_ BitVec 32)))Bool) 
+(constraint (=> (or (and (= x y) (= lock (_ bv1 32)) ) (and (= (bvadd x (_ bv1 32)) y) (= lock (_ bv0 32)) ) )(inv-f x y lock )))
+(constraint (=> (and (inv-f x y lock ) (or (and (and (not (= x y)) (= lock! (_ bv1 32)) ) (= x! y) ) (and (and (and (not (= x y)) (= lock! (_ bv0 32)) ) (= x! y) ) (= y! (bvadd y (_ bv1 32))) ) ) )(inv-f x! y! lock! )))
+(constraint (=> (inv-f x y lock )(not (and (= x y) (not (= lock (_ bv1 32))) ))))
+(check-synth)
+
