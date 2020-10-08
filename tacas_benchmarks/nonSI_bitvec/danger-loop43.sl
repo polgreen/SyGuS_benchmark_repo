@@ -1,26 +1,26 @@
 (set-logic BV)
 
-(define-fun G ((x (_ BitVec 32))) Bool
+(define-fun G ((x (BitVec 32))) Bool
     (bvult x #x0000000a)
 )
 
-(define-fun B_x ((x (_ BitVec 32))) (_ BitVec 32)
+(define-fun B_x ((x (BitVec 32))) (BitVec 32)
     (bvadd x #x00000001)
 )
 
-(define-fun A ((x (_ BitVec 32))) Bool
+(define-fun A ((x (BitVec 32))) Bool
     (= x #x0000000a)
 )
 
-(declare-var x_var (_ BitVec 32))
+(declare-var x_var (BitVec 32))
 
-(synth-fun D ((x (_ BitVec 32))) Bool
+(synth-fun D ((x (BitVec 32))) Bool
 )
 
-(synth-fun R ((x (_ BitVec 32))) (_ BitVec 32)
+(synth-fun R ((x (BitVec 32))) (BitVec 32)
 )
 
-(synth-fun x0 () (_ BitVec 32)
+(synth-fun x0 () (BitVec 32)
 )
 
 (constraint 

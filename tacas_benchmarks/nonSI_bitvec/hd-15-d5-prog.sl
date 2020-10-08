@@ -3,10 +3,10 @@
 
 (set-logic BV)
 
-(define-fun hd15 ((x (_ BitVec 32)) (y (_ BitVec 32))) (_ BitVec 32) (bvsub (bvor x y) (bvlshr (bvxor x y) #x00000001)))
+(define-fun hd15 ((x (BitVec 32)) (y (BitVec 32))) (BitVec 32) (bvsub (bvor x y) (bvlshr (bvxor x y) #x00000001)))
 
-(synth-fun f ((x (_ BitVec 32)) (y (_ BitVec 32))) (_ BitVec 32)
-    ((Start (_ BitVec 32) ((bvnot Start)
+(synth-fun f ((x (BitVec 32)) (y (BitVec 32))) (BitVec 32)
+    ((Start (BitVec 32) ((bvnot Start)
 						 (bvxor Start Start)
 						 (bvand Start Start)
 						 (bvor Start Start)
@@ -28,8 +28,8 @@
 						 #x00000000
 						 #xFFFFFFFF))))
 
-(declare-var x (_ BitVec 32))
-(declare-var y (_ BitVec 32))
+(declare-var x (BitVec 32))
+(declare-var y (BitVec 32))
 (constraint (= (hd15 x y) (f x y)))
 (check-synth)
 

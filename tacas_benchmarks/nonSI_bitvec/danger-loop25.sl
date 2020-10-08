@@ -1,63 +1,63 @@
 (set-logic BV)
 
-(declare-var x (_ BitVec 32))
+(declare-var x (BitVec 32))
 
-(declare-var y (_ BitVec 32))
+(declare-var y (BitVec 32))
 
-(declare-var lockstate (_ BitVec 32))
+(declare-var lockstate (BitVec 32))
 
-(define-fun if0 ((x (_ BitVec 32))(y (_ BitVec 32))(z (_ BitVec 32))) (_ BitVec 32)
+(define-fun if0 ((x (BitVec 32))(y (BitVec 32))(z (BitVec 32))) (BitVec 32)
     (ite (= x #x00000000) z y)
 )
 
-(define-fun expand ((x Bool)) (_ BitVec 32)
+(define-fun expand ((x Bool)) (BitVec 32)
     (ite x #x00000001 #x00000000)
 )
 
-(define-fun G ((x (_ BitVec 32))(y (_ BitVec 32))) Bool
+(define-fun G ((x (BitVec 32))(y (BitVec 32))) Bool
     (not (= x y))
 )
 
-(define-fun B_x ((y (_ BitVec 32))) (_ BitVec 32)
+(define-fun B_x ((y (BitVec 32))) (BitVec 32)
     y
 )
 
-(define-fun B_y ((y (_ BitVec 32))(n (_ BitVec 32))) (_ BitVec 32)
+(define-fun B_y ((y (BitVec 32))(n (BitVec 32))) (BitVec 32)
     (if0 n y (bvadd y #x00000001))
 )
 
-(define-fun B_lockstate ((n (_ BitVec 32))) (_ BitVec 32)
+(define-fun B_lockstate ((n (BitVec 32))) (BitVec 32)
     (if0 n #x00000000 #x00000001)
 )
 
-(define-fun A ((lockstate (_ BitVec 32))) Bool
+(define-fun A ((lockstate (BitVec 32))) Bool
     (= lockstate #x00000000)
 )
 
-(synth-fun D ((x (_ BitVec 32))(y (_ BitVec 32))(lockstate (_ BitVec 32))) Bool
+(synth-fun D ((x (BitVec 32))(y (BitVec 32))(lockstate (BitVec 32))) Bool
 )
 
-(synth-fun R ((x (_ BitVec 32))(y (_ BitVec 32))(lockstate (_ BitVec 32))) (_ BitVec 32)
+(synth-fun R ((x (BitVec 32))(y (BitVec 32))(lockstate (BitVec 32))) (BitVec 32)
 )
 
-(synth-fun S ((x (_ BitVec 32))(y (_ BitVec 32))(lockstate (_ BitVec 32))) (_ BitVec 32)
+(synth-fun S ((x (BitVec 32))(y (BitVec 32))(lockstate (BitVec 32))) (BitVec 32)
 )
 
-(synth-fun y0 ((x (_ BitVec 32))(y (_ BitVec 32))(lockstate (_ BitVec 32))) (_ BitVec 32)
+(synth-fun y0 ((x (BitVec 32))(y (BitVec 32))(lockstate (BitVec 32))) (BitVec 32)
 )
 
-(synth-fun n0 ((x (_ BitVec 32))(y (_ BitVec 32))(lockstate (_ BitVec 32))) (_ BitVec 32)
+(synth-fun n0 ((x (BitVec 32))(y (BitVec 32))(lockstate (BitVec 32))) (BitVec 32)
 )
 
-(define-fun x0 ((y (_ BitVec 32))) (_ BitVec 32)
+(define-fun x0 ((y (BitVec 32))) (BitVec 32)
     y
 )
 
-(define-fun lockstate0 ((n (_ BitVec 32))) (_ BitVec 32)
+(define-fun lockstate0 ((n (BitVec 32))) (BitVec 32)
     (if0 n #x00000001 #x00000000)
 )
 
-(define-fun y1 ((y (_ BitVec 32))(n (_ BitVec 32))) (_ BitVec 32)
+(define-fun y1 ((y (BitVec 32))(n (BitVec 32))) (BitVec 32)
     (if0 n y (bvadd y #x00000001))
 )
 

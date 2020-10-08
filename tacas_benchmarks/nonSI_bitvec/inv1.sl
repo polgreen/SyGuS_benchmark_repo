@@ -1,6 +1,6 @@
 (set-logic BV)
 
-(synth-fun inv ((x (_ BitVec 4))) Bool
+(synth-fun inv ((x (BitVec 4))) Bool
 )
 
 (define-fun implies ((a Bool)(b Bool)) Bool

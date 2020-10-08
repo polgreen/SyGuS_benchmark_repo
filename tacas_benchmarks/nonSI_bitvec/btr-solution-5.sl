@@ -2,8 +2,8 @@
 
 ;; Expected solution: (x | (1 << bit)) ^ (1 << bit)
 
-(define-fun bit-reset ((x (_ BitVec 32)) (bit (_ BitVec 32))) (_ BitVec 32)
-  (let ((modulo-shift (_ BitVec 32) (bvand bit #x0000001f)))
+(define-fun bit-reset ((x (BitVec 32)) (bit (BitVec 32))) (BitVec 32)
+  (let ((modulo-shift (BitVec 32) (bvand bit #x0000001f)))
     (ite (= modulo-shift #x00000000) (bvand #b11111111111111111111111111111110 x)
     (ite (= modulo-shift #x00000001) (bvand #b11111111111111111111111111111101 x)
     (ite (= modulo-shift #x00000002) (bvand #b11111111111111111111111111111011 x)
@@ -37,15 +37,15 @@
     (ite (= modulo-shift #x0000001e) (bvand #b10111111111111111111111111111111 x)
 	 (bvand #b01111111111111111111111111111111 x))))))))))))))))))))))))))))))))))
 
-(synth-fun btr ((x (_ BitVec 32)) (bit (_ BitVec 32))) (_ BitVec 32)
-    ((Start (_ BitVec 32) (
-                         (Constant (_ BitVec 32))
-                         (Variable (_ BitVec 32))
+(synth-fun btr ((x (BitVec 32)) (bit (BitVec 32))) (BitVec 32)
+    ((Start (BitVec 32) (
+                         (Constant (BitVec 32))
+                         (Variable (BitVec 32))
 			 (bvxor Start Start) (bvor  Start Start) (bvshl Start Start)
                          ))))
 
-(declare-var x   (_ BitVec 32))
-(declare-var bit (_ BitVec 32))
+(declare-var x   (BitVec 32))
+(declare-var bit (BitVec 32))
 (constraint (= (btr x bit) (bit-reset x bit)))
 
 (check-synth)

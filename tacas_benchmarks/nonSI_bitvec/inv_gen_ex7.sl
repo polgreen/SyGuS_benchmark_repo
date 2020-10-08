@@ -1,6 +1,6 @@
 (set-logic BV)
 
-(synth-fun inv ((i (_ BitVec 32))(y (_ BitVec 32))(l (_ BitVec 32))) Bool
+(synth-fun inv ((i (BitVec 32))(y (BitVec 32))(l (BitVec 32))) Bool
 )
 
 (define-fun and3 ((b1 Bool)(b2 Bool)(b3 Bool)) Bool
@@ -31,21 +31,21 @@
     (or (or4 b1 b2 b3 b4) b5)
 )
 
-(declare-var i (_ BitVec 32))
+(declare-var i (BitVec 32))
 
-(declare-var x (_ BitVec 32))
+(declare-var x (BitVec 32))
 
-(declare-var y (_ BitVec 32))
+(declare-var y (BitVec 32))
 
-(declare-var l (_ BitVec 32))
+(declare-var l (BitVec 32))
 
-(declare-var i1 (_ BitVec 32))
+(declare-var i1 (BitVec 32))
 
-(declare-var x1 (_ BitVec 32))
+(declare-var x1 (BitVec 32))
 
-(declare-var y1 (_ BitVec 32))
+(declare-var y1 (BitVec 32))
 
-(declare-var l1 (_ BitVec 32))
+(declare-var l1 (BitVec 32))
 
 (constraint 
 (=> (or3 (bvult x #x00000000) (bvult y #x00000000) (bvugt y x)) true)

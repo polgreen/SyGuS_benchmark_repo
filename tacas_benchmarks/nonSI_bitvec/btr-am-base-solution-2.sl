@@ -2,8 +2,8 @@
 
 ;; Expected solution: x ^ (x & (1 << bit)) or x & (x ^ (1 << bit))
 
-(define-fun bit-reset ((x (_ BitVec 32)) (bit (_ BitVec 32))) (_ BitVec 32)
-  (let ((modulo-shift (_ BitVec 32) (bvand bit #x0000001f)))
+(define-fun bit-reset ((x (BitVec 32)) (bit (BitVec 32))) (BitVec 32)
+  (let ((modulo-shift (BitVec 32) (bvand bit #x0000001f)))
     (ite (= modulo-shift #x00000000) (bvand #b11111111111111111111111111111110 x)
     (ite (= modulo-shift #x00000001) (bvand #b11111111111111111111111111111101 x)
     (ite (= modulo-shift #x00000002) (bvand #b11111111111111111111111111111011 x)
@@ -37,34 +37,34 @@
     (ite (= modulo-shift #x0000001e) (bvand #b10111111111111111111111111111111 x)
 	 (bvand #b01111111111111111111111111111111 x))))))))))))))))))))))))))))))))))
 
-(define-fun load-val ((base (_ BitVec 32)) (ptr (_ BitVec 32)) (mem (_ BitVec 32))) (_ BitVec 32)
+(define-fun load-val ((base (BitVec 32)) (ptr (BitVec 32)) (mem (BitVec 32))) (BitVec 32)
   (ite (= ptr base)
        mem
        #x00000000))
 
-(define-fun store ((base (_ BitVec 32)) (ptr (_ BitVec 32)) (mem (_ BitVec 32)) (val (_ BitVec 32))) (_ BitVec 32)
+(define-fun store ((base (BitVec 32)) (ptr (BitVec 32)) (mem (BitVec 32)) (val (BitVec 32))) (BitVec 32)
   (ite (= ptr base)
        val
        #x00000000))
 
-(define-fun bit-reset-destam-base ((base (_ BitVec 32)) (mem (_ BitVec 32)) (bit (_ BitVec 32))) (_ BitVec 32)
-  (let ((effective (_ BitVec 32) base))
-    (let ((lv (_ BitVec 32) (load-val base effective mem)))
-        (let ((result (_ BitVec 32) (bit-reset lv bit)))
+(define-fun bit-reset-destam-base ((base (BitVec 32)) (mem (BitVec 32)) (bit (BitVec 32))) (BitVec 32)
+  (let ((effective (BitVec 32) base))
+    (let ((lv (BitVec 32) (load-val base effective mem)))
+        (let ((result (BitVec 32) (bit-reset lv bit)))
 	  (store base effective mem result)))))
 
-(synth-fun btr-am ((base (_ BitVec 32)) (mem (_ BitVec 32)) (bit (_ BitVec 32))) (_ BitVec 32)
-           ((Start (_ BitVec 32) ((Variable (_ BitVec 32))
+(synth-fun btr-am ((base (BitVec 32)) (mem (BitVec 32)) (bit (BitVec 32))) (BitVec 32)
+           ((Start (BitVec 32) ((Variable (BitVec 32))
 				(store base Is Start Is)))
 
-            (Is    (_ BitVec 32) ((Constant (_ BitVec 32))
-				(Variable (_ BitVec 32))
+            (Is    (BitVec 32) ((Constant (BitVec 32))
+				(Variable (BitVec 32))
 				(bvxor Is Is) (bvand Is Is) (bvshl Is Is)
 				(load-val base Is Start)))))
 
-(declare-var base  (_ BitVec 32))
-(declare-var mem   (_ BitVec 32))
-(declare-var bit   (_ BitVec 32))
+(declare-var base  (BitVec 32))
+(declare-var mem   (BitVec 32))
+(declare-var bit   (BitVec 32))
 (constraint (= (btr-am base mem bit) (bit-reset-destam-base base mem bit)))
 
 (check-synth)

@@ -9,7 +9,7 @@
 ;
 (set-logic BV)
 
-(synth-fun SC ((s (_ BitVec 4)) (t (_ BitVec 4))) Bool
+(synth-fun SC ((s (BitVec 4)) (t (BitVec 4))) Bool
   ((Start Bool (
      true
      false
@@ -22,7 +22,7 @@
      (bvuge StartBv StartBv)
      (bvsge StartBv StartBv)
    ))
-   (StartBv (_ BitVec 4) (
+   (StartBv (BitVec 4) (
      s
      t
      #x0
@@ -39,15 +39,15 @@
    ))
 ))
 
-(declare-var s (_ BitVec 4))
-(declare-var t (_ BitVec 4))
-(define-fun udivtotal ((a (_ BitVec 4)) (b (_ BitVec 4))) (_ BitVec 4)
+(declare-var s (BitVec 4))
+(declare-var t (BitVec 4))
+(define-fun udivtotal ((a (BitVec 4)) (b (BitVec 4))) (BitVec 4)
   (ite (= b #x0) #xF (bvudiv a b))
 )
-(define-fun uremtotal ((a (_ BitVec 4)) (b (_ BitVec 4))) (_ BitVec 4)
+(define-fun uremtotal ((a (BitVec 4)) (b (BitVec 4))) (BitVec 4)
   (ite (= b #x0) a (bvurem a b))
 )
-(define-fun case ((x (_ BitVec 4)) (s (_ BitVec 4)) (t (_ BitVec 4))) Bool
+(define-fun case ((x (BitVec 4)) (s (BitVec 4)) (t (BitVec 4))) Bool
 (= (bvlshr x s) t)
 )
 (constraint
