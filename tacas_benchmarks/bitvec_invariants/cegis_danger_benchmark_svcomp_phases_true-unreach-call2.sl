@@ -1,22 +1,29 @@
-WARNING: unsupported expression type/
-  * type: unsignedbv
-      * width: 32
-  0: symbol
-      * type: unsignedbv
-          * width: 32
-      * identifier: y#1
-  1: symbol
-      * type: unsignedbv
-          * width: 32
-      * identifier: x#1
-(set-logic ALL)
+(set-logic BV)
+
+(synth-inv inv-f ((x (_ BitVec 32))(y (_ BitVec 32)))
+ )
+
 (declare-var x (_ BitVec 32))
-(declare-var y (_ BitVec 32))
 (declare-var x! (_ BitVec 32))
+
+(declare-var y (_ BitVec 32))
 (declare-var y! (_ BitVec 32))
-(synth-fun inv-f((parameter0 (_ BitVec 32))(parameter1 (_ BitVec 32)))Bool) 
-(constraint (=> (= x (_ bv1 32))(inv-f x y )))
-(constraint (=> (and (inv-f x y ) (and (and (and (bvugt y (_ bv0 32)) (bvult x y) ) (= y! y) ) (or (and (and (bvugt x (_ bv0 32)) (bvult x (/)) ) (= x! (bvmul x x)) ) (= x! (bvadd x (_ bv1 32))) ) ) )(inv-f x! y! )))
-(constraint (=> (inv-f x y )(or (= y (_ bv0 32)) (= x y) )))
+
+(define-fun pre-f ((x (_ BitVec 32))(y (_ BitVec 32))) Bool
+    (= x #x00000001)
+)
+
+(define-fun trans-f ((x (_ BitVec 32))(y (_ BitVec 32))(x! (_ BitVec 32))(y! (_ BitVec 32))) Bool
+    (and (and (and (bvugt y #x00000000) (bvult x y)) (= y! y)) (or (and (and (bvugt x #x00000000) (bvult x (bvudiv y x))) (= x! (bvmul x x))) (= x! (bvadd x #x00000001))))
+)
+
+(define-fun post-f ((x (_ BitVec 32))(y (_ BitVec 32))) Bool
+    (or (= y #x00000000) (= x y))
+)
+
+(constraint (=> (pre-f x y)(inv-f x y)))
+(constraint (=> (and(inv-f x y)(trans-f x y x! y!))(inv-f x! y!)))
+(constraint (=> (inv-f x y)(post-f x y)))
 (check-synth)
+
 

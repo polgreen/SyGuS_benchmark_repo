@@ -1,11 +1,28 @@
-(set-logic ALL)
+(set-logic BV)
+
+(synth-fun inv-f ((x (_ BitVec 32))(y (_ BitVec 32)) Bool))
+
 (declare-var x (_ BitVec 32))
-(declare-var y (_ BitVec 32))
 (declare-var x! (_ BitVec 32))
+
+(declare-var y (_ BitVec 32))
 (declare-var y! (_ BitVec 32))
-(synth-fun inv-f((parameter0 (_ BitVec 32))(parameter1 (_ BitVec 32)))Bool) 
-(constraint (=> (and (= x (_ bv1 32)) (= y (_ bv0 32)) )(inv-f x y )))
-(constraint (=> (and (inv-f x y ) (and (bvult y (_ bv1024 32)) (and (= x! (_ bv0 32)) (= y! (bvadd y (_ bv1 32))) ) ) )(inv-f x! y! )))
-(constraint (=> (inv-f x y )(or (= x (_ bv0 32)) (bvugt y (_ bv1024 32)) )))
+
+(define-fun pre-f ((x (_ BitVec 32))(y (_ BitVec 32))) Bool
+    (and (= x #x00000001) (= y #x00000000))
+)
+
+(define-fun trans-f ((x (_ BitVec 32))(x! (_ BitVec 32))(y (_ BitVec 32))(y! (_ BitVec 32))) Bool
+    (and (bvult y #x00000400) (and (= x! #x00000000) (= y! (bvadd y #x00000001))))
+)
+
+(define-fun post-f ((x (_ BitVec 32))(y (_ BitVec 32))) Bool
+    (or (= x #x00000000) (bvugt y #x00000400))
+)
+
+(constraint (=> (pre-f x y)(inv-f x y)))
+(constraint (=> (and(inv-f x y)(trans-f x y x! y!))(inv-f x! y!)))
+(constraint (=> (inv-f x y)(post-f x y)))
 (check-synth)
+
 

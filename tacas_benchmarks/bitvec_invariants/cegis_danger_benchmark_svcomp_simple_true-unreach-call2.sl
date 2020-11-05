@@ -1,9 +1,28 @@
-(set-logic ALL)
+(set-logic BV)
+
+(synth-inv inv-f ((x (_ BitVec 32)))
+ )
+
 (declare-var x (_ BitVec 32))
 (declare-var x! (_ BitVec 32))
-(synth-fun inv-f((parameter0 (_ BitVec 32)))Bool) 
-(constraint (=> (= x x)(inv-f x )))
-(constraint (=> (and (inv-f x ) (and (bvult x (_ bv268435455 32)) (= x! (bvadd x (_ bv1 32))) ) )(inv-f x! )))
-(constraint (=> (inv-f x )(bvuge x (_ bv268435455 32))))
+
+
+
+(define-fun pre-f ((x (_ BitVec 32))) Bool
+    (= x x)
+)
+
+(define-fun trans-f ((x (_ BitVec 32))(x! (_ BitVec 32))) Bool
+    (and (bvult x #x0fffffff) (= x! (bvadd x #x00000001)))
+)
+
+(define-fun post-f ((x (_ BitVec 32))) Bool
+    (bvuge x #x0fffffff)
+)
+
+(constraint (=> (pre-f x )(inv-f x )))
+(constraint (=> (and(inv-f x )(trans-f x  x! ))(inv-f x! )))
+(constraint (=> (inv-f x )(post-f x )))
 (check-synth)
+
 

@@ -1,20 +1,28 @@
-WARNING: unsupported expression typemod
-  * type: unsignedbv
-      * width: 32
-  0: symbol
-      * type: unsignedbv
-          * width: 32
-      * identifier: x#2
-  1: constant
-      * type: unsignedbv
-          * width: 32
-      * value: 2
-(set-logic ALL)
+(set-logic BV)
+
+(synth-inv inv-f ((x (_ BitVec 32)))
+ )
+
 (declare-var x (_ BitVec 32))
 (declare-var x! (_ BitVec 32))
-(synth-fun inv-f((parameter0 (_ BitVec 32)))Bool) 
-(constraint (=> (= x (_ bv10 32))(inv-f x )))
-(constraint (=> (and (inv-f x ) (and (bvuge x (_ bv10 32)) (= x! (bvadd x (_ bv2 32))) ) )(inv-f x! )))
-(constraint (=> (inv-f x )(= (_ bv0 32) (mod))))
+
+
+
+(define-fun pre-f ((x (_ BitVec 32))) Bool
+    (= x #x0000000A)
+)
+
+(define-fun trans-f ((x (_ BitVec 32))(x! (_ BitVec 32))) Bool
+    (and (bvuge x #x0000000A) (= x! (bvadd x #x00000002)))
+)
+
+(define-fun post-f ((x (_ BitVec 32))) Bool
+    (= #x00000000 (bvurem x #x00000002))
+)
+
+(constraint (=> (pre-f x )(inv-f x )))
+(constraint (=> (and(inv-f x )(trans-f x  x! ))(inv-f x! )))
+(constraint (=> (inv-f x )(post-f x )))
 (check-synth)
+
 
