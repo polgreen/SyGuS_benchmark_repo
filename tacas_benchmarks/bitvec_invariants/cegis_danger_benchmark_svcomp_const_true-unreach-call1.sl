@@ -1,6 +1,6 @@
 (set-logic BV)
 
-(synth-fun inv-f ((x (_ BitVec 32))(y (_ BitVec 32)) Bool))
+(synth-fun inv-f ((x (_ BitVec 32))(y (_ BitVec 32))) Bool)
 
 (declare-var x (_ BitVec 32))
 (declare-var x! (_ BitVec 32))
